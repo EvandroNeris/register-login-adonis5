@@ -25,3 +25,4 @@ Route.get('/', async () => {
 })
 
 Route.post('/user', 'MakeCreateUserController.create')
+Route.post('/auth', 'MakeAuthController.auth')

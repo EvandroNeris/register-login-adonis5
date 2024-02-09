@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, afterSave, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { uuid } from 'uuidv4'
+import Event from '@ioc:Adonis/Core/Event'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -31,5 +32,13 @@ export default class User extends BaseModel {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
+  }
+
+  @afterSave() 
+  public static async afterSaveHook (user: User) {
+    Event.emit('new:user', {
+      email: user.email,
+      name: user.name
+    })
   }
 }

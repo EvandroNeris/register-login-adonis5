@@ -26,6 +26,9 @@ declare module '@ioc:Adonis/Core/Event' {
   |
   */
   interface EventsList {
-    //
+    'new:user': {
+      email: string,
+      name: string
+    }
   }
 }

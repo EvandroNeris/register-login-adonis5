@@ -1,11 +1,13 @@
 import { CreateUserUseCaseContract } from 'App/Application/user/create-user.usecase.contract'
+import { UserValidatorContract } from '../validators/user.validator.contract'
 
 export class UserController {
   static async create(
-    { request, response },
-    createUserUseCase: CreateUserUseCaseContract
+    { response },
+    createUserUseCase: CreateUserUseCaseContract,
+    userValidator: UserValidatorContract
   ) {
-    const payload = request.body()
+    const payload = await userValidator.validate()
 
     await createUserUseCase.execute(payload)
 
